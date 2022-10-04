@@ -1,0 +1,23 @@
+{
+  "name": "bike-rentals",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Abhi-arch246/bike-rentals.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Abhi-arch246/bike-rentals/issues"
+  },
+  "homepage": "https://github.com/Abhi-arch246/bike-rentals#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "mongoose": "^6.6.3"
+  }
+}

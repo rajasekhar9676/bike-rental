@@ -5,9 +5,62 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #FCF8E8 !important;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+h1 {
+  font-size: 30px;
+  font-weight: bold;
+  color: #D61C4E;
+}
+
+.header {
+  padding: 20px;
+}
+
+.content {
+  min-height: 90vh;
+}
+
+.navtop {
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+}
+
+.loginbg {
+  overflow-x: hidden;
+  background-image: url("../src/images/bglo.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+}
+
+.registerbg {
+  overflow-x: hidden;
+  background-image: url("../src/images/bgre.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+}
+
+.bg-card {
+  background: #2C3E50;
+  background: -webkit-linear-gradient(to right, #FD746C, #2C3E50);
+  background: linear-gradient(to right, #FD746C, #2C3E50);
+  border-radius: 10px;
+}
+
+.highlight:hover {
+  transform: translateY(0) scale(1);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  transition-timing-function: ease-in;
+  transition-duration: 0.2s;
+
+
 }
