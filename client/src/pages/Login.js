@@ -2,20 +2,29 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch } from 'react-redux'
+import { userLogin } from '../redux/actions/userAction';
+
 
 function Login() {
     const [email, setemail] = useState('')
     const [pass, setpass] = useState('')
+    const dispatch = useDispatch()
 
-
-    const loginsubmit = () => {
-
+    const loginsubmit = (e) => {
+        e.preventDefault()
+        const obj = {
+            email,
+            pass
+        }
+        dispatch(userLogin(obj))
+        console.log(obj);
     }
     return (
         <div className='loginbg'>
             <h1 className='text-center bg-dark py-4'>Welcome to the world of bikes</h1>
             <div className="row">
-                <div className="col-lg-3 col-sm-4 py-5 mt-3">
+                <div className="col-lg-4 col-md-3 col-sm-4 py-5 mt-3">
                     <div className=" p-1 mx-1 bg-card">
                         <h2 className='mt-2' style={{ textAlign: "left", marginLeft: "40px" }}>Login</h2>
                         {/* {error && (
@@ -46,7 +55,11 @@ function Login() {
                             <br />
 
                         </form>
-                        <Link className="text-white my-3" to="/register">Not Registered? Click here</Link>
+                        <div className="my-3 text-center">
+
+                            <Link className="text-white font-weight-bold text-decoration-none" to="/register">Not Registered? Click here ..</Link>
+                        </div>
+
                     </div>
                     <ToastContainer />
                 </div>

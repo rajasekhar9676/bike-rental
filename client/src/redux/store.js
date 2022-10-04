@@ -3,14 +3,17 @@ import { composeWithDevTools } from '@redux-devtools/extension';
 import thunk from 'redux-thunk'
 import { bikesReducer } from './reducers/bikeReducer';
 import { alertReducer } from './reducers/alertReducer'
-
+import { registerUserReducer, loginUserReducer } from './reducers/userReducer';
 const composeEnhancers = composeWithDevTools({
     // Specify here name, actionsDenylist, actionsCreators and other options
 });
 
 const rootReducer = combineReducers({
     bikesReducer,
-    alertReducer
+    alertReducer,
+    registerUserReducer,
+    loginUserReducer
+
 })
 const store = createStore(
     rootReducer,
