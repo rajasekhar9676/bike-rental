@@ -2,23 +2,29 @@ import React, { useEffect } from 'react'
 import Layout from '../components/Layout'
 import { useSelector, useDispatch } from 'react-redux'
 import { getAllBikes } from '../redux/actions/bikesAction'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 
 function Home() {
     const { bikes } = useSelector(state => state.bikesReducer)
     const { loading, error } = useSelector(state => state.alertReducer)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     useEffect(() => {
+
+
+
         dispatch(getAllBikes())
+
+
+
     }, [])
 
     return (
         <Layout>
 
-            <h1 style={{ marginTop: "90px" }} className='text-center py-3'>Best Bikes available for you!</h1>
-            {/* <h1>{bikes.length}</h1> */}
+            <h1 style={{ marginTop: "120px" }} className='text-center py-3'>Best Bikes available for you!</h1>
             <div className='row mt-5 justify-content-center'>
                 {
                     loading ?
@@ -34,7 +40,7 @@ function Home() {
                             bikes.map(bike => {
                                 return (
 
-                                    <div className='highlight col-md-4 col-lg-3 col-sm-5 p-3 card m-3 rounded justify-content-center'>
+                                    <div className='highlight col-md-4 col-lg-3 col-sm-6 p-3 card m-3 rounded justify-content-center'>
 
 
                                         <img src={bike.image} className="high img-fluid" alt="" />

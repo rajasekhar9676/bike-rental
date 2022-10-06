@@ -1,21 +1,31 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { userRegister } from '../redux/actions/userAction';
 
 
 function Register() {
+    const navigate = useNavigate()
     const [name, setname] = useState('')
     const [email, setemail] = useState('')
     const [pass, setpass] = useState('')
     const [cpass, setcpass] = useState('')
     const dispatch = useDispatch()
+    const { msg } = useSelector(state => state.registerUserReducer)
 
+    useEffect(() => {
+
+        if (localStorage.getItem("auth")) {
+            navigate("/home")
+        }
+
+    }, [])
 
     const registerSubmit = (e) => {
         e.preventDefault()
+
         if (pass == cpass) {
             const obj = {
                 name,
@@ -23,15 +33,27 @@ function Register() {
                 pass
             }
             dispatch(userRegister(obj))
-            toast.success("Registration successful!", {
+            toast.success(msg, {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 3500,
+                theme: "colored"
+            });
+            toast.success("You will be redirected to login page", {
+                position: "top-right",
+                autoClose: 5000,
+                theme: "colored"
+
+            })
+            setTimeout(function () {
+                navigate('/')
+            }, 3000);
+            console.log(msg);
+        } else {
+            toast.error("Passwords doesn't match", {
                 position: toast.POSITION.TOP_RIGHT,
                 autoClose: 2500,
                 theme: "colored"
             });
-            console.log(obj);
-
-        } else {
-            alert('Passwords doesnt match')
         }
 
 

@@ -3,17 +3,19 @@ export const registerUserReducer = (state = {}, action) => {
     switch (action.type) {
         case 'USER_REGISTER_REQUEST': return {
             ...state,
-            loading: true
+            loading: true,
+            msg: action.payload
         }
         case 'USER_REGISTER_SUCCESS': return {
             ...state,
             loading: false,
-            success: true
+            success: true,
+            msg: action.payload
         }
         case 'USER_REGISTER_ERROR': return {
             ...state,
             loading: false,
-            error: 'User already registered'
+            msg: action.payload
         }
 
         default: return state
