@@ -12,4 +12,17 @@ router.get("/allbikes", async (req, res) => {
     }
 })
 
+router.post('/getbikebyid', (req, res) => {
+    Bike.find({ _id: req.body.id }, (err, docs) => {
+        if (!err) {
+            res.send(docs[0])
+        }
+        else {
+            return res.status(400).json({ message: "Something went wrong" })
+        }
+
+    })
+}
+)
+
 module.exports = router

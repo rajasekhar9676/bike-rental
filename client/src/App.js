@@ -1,8 +1,11 @@
 import './App.css';
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Booking from './pages/Booking';
+import BookingList from './pages/BookingList';
+import Profile from './pages/Profile';
 
 
 function App() {
@@ -11,6 +14,9 @@ function App() {
       <Route path='/' element={<Login />} />
       <Route path='/register' element={<Register />} />
       <Route path='/home' element={<Home />} />
+      <Route path='/booking/:bikeid' element={<Booking />} />
+      <Route path='/booking-list' element={<BookingList />} />
+      <Route path='profile' element={<Profile />} />
     </Routes>
   );
 }

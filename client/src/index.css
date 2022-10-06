@@ -17,9 +17,22 @@ code {
 }
 
 h1 {
-  font-size: 30px;
+  font-size: 40px;
   font-weight: bold;
   color: #D61C4E;
+}
+
+.specs {
+  font-weight: bold;
+  color: #D61C4E;
+}
+
+.date-input {
+  border: 2px solid #2C3E50;
+  color: white;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #D61C4E;
 }
 
 .header {
@@ -80,7 +93,7 @@ h1 {
 }
 
 .high:hover {
-  transform: scale(1.3);
+  transform: scale(1.1);
   transition-timing-function: linear;
   transition-duration: 0.3s;
   cursor: pointer;

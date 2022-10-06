@@ -8,7 +8,7 @@ export const userLogin = (obj) => async dispatch => {
 
     await axios.post('/api/users/login', obj)
         .then(res => {
-            localStorage.setItem('auth', JSON.stringify(res.data))
+            localStorage.setItem('auth', JSON.stringify(res.data[0].name))
             window.location.href = '/home'
             console.log(res.data);
             dispatch({ type: 'LOADING', payload: false })

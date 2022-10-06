@@ -12,12 +12,7 @@ function Home() {
     const navigate = useNavigate()
 
     useEffect(() => {
-
-
-
         dispatch(getAllBikes())
-
-
 
     }, [])
 
@@ -44,7 +39,7 @@ function Home() {
 
 
                                         <img src={bike.image} className="high img-fluid" alt="" />
-                                        <div className="row pt-2">
+                                        <div className="row pt-4">
 
                                             <div className="col-md-8">
 
@@ -54,7 +49,7 @@ function Home() {
                                                 <h5 className='mt-3'>Price: {bike.rentPerHour} /-</h5>
                                             </div>
                                             <div className="col-md-4">
-                                                <button style={{ backgroundColor: '#D61C4E' }} className='btn mt-4 text-white'>Book now</button>
+                                                <button style={{ backgroundColor: '#D61C4E' }} className='btn mt-4'> <Link className='text-decoration-none text-white' to={`/booking/${bike._id}`}>Book Now</Link></button>
                                             </div>
                                         </div>
 

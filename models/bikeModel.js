@@ -4,6 +4,8 @@ const bikeSchema = mongoose.Schema({
 
     name: { type: String, required: true },
     image: { type: String, required: true },
+    engine: { type: String, required: true },
+    gear: { type: String, required: true },
     fuelType: { type: String, required: true },
     rentPerHour: { type: Number, required: true },
     availableCount: { type: Number, required: true },

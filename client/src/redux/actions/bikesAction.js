@@ -15,3 +15,16 @@ export const getAllBikes = () => async dispatch => {
 
     }
 }
+
+export const getBikeById = (id) => (dispatch) => {
+
+    dispatch({ type: "GET_BIKEBYID_REQUEST" })
+
+    axios.post("/api/bikes/getbikebyid", { id })
+        .then(res => {
+            dispatch({ type: "GET_BIKEBYID_SUCCESS", payload: res.data })
+        })
+        .catch(err => {
+            dispatch({ type: "GET_BIKEBYID_ERROR", paylod: err })
+        })
+}

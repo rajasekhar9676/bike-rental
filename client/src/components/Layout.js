@@ -7,7 +7,6 @@ function Layout(props) {
 
 
     const user = JSON.parse(localStorage.getItem('auth'))
-    const currentUser = user[0].name;
 
 
     const logout = () => {
@@ -29,12 +28,12 @@ function Layout(props) {
                     </Link>
                     <div className="dropdown">
                         <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {currentUser}
+                            {user}
                         </button>
                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a className="dropdown-item" href="/home">Home</a>
-                            <a className="dropdown-item" href="/bookings">Bookings</a>
-                            <a className="dropdown-item" href="/profile">Profile Page</a>
+                            <Link className="dropdown-item" to="/home">Home</Link>
+                            <Link className="dropdown-item" to="/booking-list">Bookings</Link>
+                            <Link className="dropdown-item" to="/profile">Profile Page</Link>
                             <button className='dropdown-item' onClick={logout}>Logout</button>
                         </div>
                     </div>
@@ -42,7 +41,7 @@ function Layout(props) {
                 </div>
 
             </div>
-            <div className="content">
+            <div className="content mt-5">
                 {props.children}
             </div>
 
