@@ -35,6 +35,11 @@ h1 {
   background-color: #D61C4E;
 }
 
+.time {
+  float: right !important;
+}
+
+
 .header {
   padding: 18px;
   position: fixed !important;

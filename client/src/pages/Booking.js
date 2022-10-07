@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import Layout from '../components/Layout'
 import 'animate.css'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import moment from 'moment'
 import { Link, useParams } from 'react-router-dom'
 import { getBikeById } from '../redux/actions/bikesAction'
 import { useSelector, useDispatch } from 'react-redux'
+import { bookingBike } from '../redux/actions/BookingAction'
 
 
 function Booking() {
@@ -14,20 +17,54 @@ function Booking() {
     const { bikeid } = useParams()
     const dispatch = useDispatch()
     const getbikebyidstate = useSelector((state) => state.getBikeByIdReducer)
+    const getbookstate = useSelector((state) => state.bookingReducer)
     const { loading, bike, error } = getbikebyidstate
+    const { msg } = getbookstate
+    const userdata = JSON.parse(localStorage.getItem('auth'))
 
     useEffect(() => {
         dispatch(getBikeById(bikeid))
     }, [])
 
-    const submitBook = (e) => {
-        e.preventDefault()
 
-        // To be worked on this section of time slot booking.
-        const from = moment(fromvalue)._d;
-        const to = moment(tovalue)._d;
-        settotalhrs(to.diff(from, 'hours'))
-        console.log(totalhrs);
+    var from = moment(fromvalue)._d;
+    var to = moment(tovalue)._d;
+
+    const submitTime = (e) => {
+        e.preventDefault()
+        function getHoursDiff(startDate, endDate) {
+            const msInHour = 1000 * 60 * 60;
+
+            return Math.ceil(Math.abs(endDate - startDate) / msInHour);
+        }
+
+        console.log(from);
+        console.log(to);
+        // console.log(getHoursDiff(from, to));
+        settotalhrs(getHoursDiff(from, to))
+    }
+
+    const bookNow = () => {
+        const reqObj = {
+            userid: userdata[0]._id,
+            bikeid: bikeid,
+            totalhrs: totalhrs,
+            totalAmount: bike.rentPerHour * totalhrs,
+            bookedSlots: {
+                from,
+                to
+
+            }
+        }
+
+        dispatch(bookingBike(reqObj))
+        toast.success(msg, {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 3500,
+            theme: "colored"
+        });
+
+        console.log(reqObj);
     }
 
     return (
@@ -35,7 +72,7 @@ function Booking() {
         <Layout>
             <div style={{ marginTop: "120px" }} className='container'>
                 <h1 className="text-center">Bike Details</h1>
-                <div className='row mt-5 justify-content-center'>
+                <div className='row mt-3 justify-content-center'>
                     {
                         loading ?
                             (
@@ -58,16 +95,31 @@ function Booking() {
                                         <h4 className='p-2'>Fuel Type : <span className='specs'>{bike.fuelType}</span></h4>
 
                                         <h4 className='p-2' >Gear : <span className='specs'>{bike.gear}</span> </h4>
-                                        <h4 className='p-2'>Per Hour Cost : <span className='specs'>{bike.rentPerHour} /-</span></h4>
+                                        <h5 className='p-2 my-3 bg-dark text-white rounded'>Select booking timeslot : </h5>
 
-                                        <form onSubmit={submitBook}>
+                                        <form onSubmit={submitTime}>
+                                            <div className='text-center'>
 
-                                            <input className='date-input p-2' value={fromvalue} onChange={(e) => setfromvalue(e.target.value)} type="datetime-local" id="fromtime" name="fromtime" />
-                                            <input className='date-input p-2' value={tovalue} onChange={(e) => settovalue(e.target.value)} type="datetime-local" id="totime" name="totime" />
+                                                <input className='date-input p-2' value={fromvalue} onChange={(e) => setfromvalue(e.target.value)} type="datetime-local" id="fromtime" name="fromtime" />
+                                                <input className='date-input p-2' value={tovalue} onChange={(e) => settovalue(e.target.value)} type="datetime-local" id="totime" name="totime" />
+                                            </div>
 
-                                            <button type="submit" className="text-center btn btn-primary mt-5">Submit</button>
+                                            <button type="submit" className="time text-center btn btn-dark my-2 float-right">Confirm timeslot</button>
+                                            <h5 className='my-3'>Total booking hours : <span className='specs'>{totalhrs}</span></h5>
+                                            <h5 className='my-'>Per Hour Cost : <span className='specs'>{bike.rentPerHour} /-</span></h5>
+
 
                                         </form>
+                                        <hr />
+                                        {/* {setgrandtotal(bike.rentPerHour * totalhrs)} */}
+                                        <h3 className='my-3'>Grand Total : <span className='specs'>{bike.rentPerHour * totalhrs} /-</span></h3>
+                                        {(bike.rentPerHour * totalhrs) > 0 ? (
+                                            <button onClick={bookNow} type="submit" className="time btn-lg text-center btn btn-dark my-1 float-right">Book Now</button>
+
+                                        ) : (
+                                            <button type="submit" className="btn-lg time text-center btn btn-dark my-1 float-right" disabled>Book Now</button>
+
+                                        )}
 
                                     </div>
 
@@ -87,7 +139,7 @@ function Booking() {
 
                 </div>
             </div>
-
+            <ToastContainer />
         </Layout>
     )
 }

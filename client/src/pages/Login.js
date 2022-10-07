@@ -28,7 +28,7 @@ function Login() {
             pass
         }
         dispatch(userLogin(obj))
-        console.log(obj);
+        // console.log(obj);
     }
     return (
         <div className='loginbg'>

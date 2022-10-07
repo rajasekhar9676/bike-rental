@@ -28,7 +28,7 @@ function Layout(props) {
                     </Link>
                     <div className="dropdown">
                         <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {user}
+                            {user[0].name}
                         </button>
                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <Link className="dropdown-item" to="/home">Home</Link>

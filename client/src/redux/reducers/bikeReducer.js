@@ -35,3 +35,22 @@ export const getBikeByIdReducer = (state = { bike: {} }, action) => {
         default: return state
     }
 }
+
+export const bookingReducer = (state = {}, action) => {
+    switch (action.type) {
+        case 'BOOK_REQUEST': return {
+            loading: true
+        }
+
+        case 'BOOK_SUCCESS': return {
+            msg: action.payload,
+            loading: false
+        }
+
+        case 'BOOK_ERROR': return {
+            msg: action.payload,
+            loading: false
+        }
+        default: return state
+    }
+}

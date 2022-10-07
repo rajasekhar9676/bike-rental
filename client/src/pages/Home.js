@@ -35,7 +35,7 @@ function Home() {
                             bikes.map(bike => {
                                 return (
 
-                                    <div className='highlight col-md-4 col-lg-3 col-sm-6 p-3 card m-3 rounded justify-content-center'>
+                                    <div key={bike._id} className='highlight col-md-4 col-lg-3 col-sm-6 p-3 card m-3 rounded justify-content-center'>
 
 
                                         <img src={bike.image} className="high img-fluid" alt="" />
