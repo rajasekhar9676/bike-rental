@@ -11,11 +11,15 @@ router.post("/bookbike", async (req, res) => {
         await newBooking.save()
         const bike = await Bike.findOne({ _id: req.body.bikeid })
         bike.bookedSlots.push(req.body.bookedSlots)
+        bike.availableCount = req.body.availableCount
         await bike.save()
         res.json({ msg: 'Booking Success!' })
+        console.log(req.body.availableCount);
     } catch (error) {
         console.log(error);
         res.json({ msg: 'Booking Failed' })
+        console.log(req.body.availableCount);
+
 
     }
 })

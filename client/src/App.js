@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Payment from './pages/Payment';
 import Booking from './pages/Booking';
 import BookingList from './pages/BookingList';
 import Profile from './pages/Profile';
@@ -17,6 +18,7 @@ function App() {
       <Route path='/booking/:bikeid' element={<Booking />} />
       <Route path='/booking-list' element={<BookingList />} />
       <Route path='profile' element={<Profile />} />
+      <Route path='/payment' element={<Payment />} />
     </Routes>
   );
 }

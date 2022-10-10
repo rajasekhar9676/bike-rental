@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from '@redux-devtools/extension';
 import thunk from 'redux-thunk'
-import { bikesReducer, getBikeByIdReducer, bookingReducer } from './reducers/bikeReducer';
+import { bikesReducer, getBikeByIdReducer, bookingReducer, orderPayReducer } from './reducers/bikeReducer';
 import { alertReducer } from './reducers/alertReducer'
 import { registerUserReducer, loginUserReducer } from './reducers/userReducer';
 const composeEnhancers = composeWithDevTools({
@@ -14,7 +14,8 @@ const rootReducer = combineReducers({
     registerUserReducer,
     loginUserReducer,
     getBikeByIdReducer,
-    bookingReducer
+    bookingReducer,
+    orderPayReducer
 
 })
 const store = createStore(

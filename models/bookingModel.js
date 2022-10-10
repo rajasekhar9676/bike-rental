@@ -8,6 +8,7 @@ const bookSchema = mongoose.Schema({
         from: { type: String },
         to: { type: String }
     },
+    isPaid: { type: Boolean, default: false, require },
     totalhrs: { type: Number },
     totalAmount: { type: Number },
     transactionId: { type: String }

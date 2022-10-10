@@ -18,3 +18,14 @@ export const bookingBike = (reqObj) => async dispatch => {
 
     }
 }
+
+export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
+
+    try {
+        dispatch({ type: 'ORDER_PAY_REQUEST' })
+        const { data } = await axios.put(`/api/orders/${id}/pay`, paymentResult)
+        dispatch({ type: 'ORDER_PAY_SUCCESS', payload: data })
+    } catch (error) {
+        dispatch({ type: 'ORDER_PAY_FAIL', paylod: error })
+    }
+}

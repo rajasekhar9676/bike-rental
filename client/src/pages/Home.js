@@ -46,7 +46,7 @@ function Home() {
                                                 <h4 className='text-left mb-2'>{bike.name}</h4>
 
 
-                                                <h5 className='mt-3'>Price: {bike.rentPerHour} /-</h5>
+                                                <h5 className='mt-3'>Price: ₹{bike.rentPerHour} /-</h5>
                                             </div>
                                             <div className="col-md-4">
                                                 <button style={{ backgroundColor: '#D61C4E' }} className='btn mt-4'> <Link className='text-decoration-none text-white' to={`/booking/${bike._id}`}>Book Now</Link></button>
