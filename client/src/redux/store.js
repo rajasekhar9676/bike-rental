@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from '@redux-devtools/extension';
 import thunk from 'redux-thunk'
-import { bikesReducer, getBikeByIdReducer, bookingReducer, getOrderByIdReducer, orderPayReducer } from './reducers/bikeReducer';
+import { bikesReducer, getBikeByIdReducer, bookingReducer, getOrderByIdReducer, orderPayReducer, getOrdersByUserIdReducer } from './reducers/bikeReducer';
 import { alertReducer } from './reducers/alertReducer'
 import { registerUserReducer, loginUserReducer } from './reducers/userReducer';
 const composeEnhancers = composeWithDevTools({
@@ -17,6 +17,7 @@ const rootReducer = combineReducers({
     getBikeByIdReducer,
     bookingReducer,
     getOrderByIdReducer,
+    getOrdersByUserIdReducer,
     orderPayReducer
 
 })

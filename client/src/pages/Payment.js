@@ -90,32 +90,25 @@ function Payment() {
                                 <h5>From time : <b>{moment(order.bookedSlots.from).format('dddd DD-MMM-YYYY, h:mm:ss a')}</b> </h5>
                                 <h5>To time : <b>{moment(order.bookedSlots.to).format('dddd DD-MMM-YYYY, h:mm:ss a')}</b> </h5>
                                 <h5>Transaction Id : <b>{order.transactionId}</b> </h5>
-                                {order.isPaid ? (<h5>Payment Status : <b>Payment Done</b> </h5>) : (<h5>Payment Status : <b>Payment Pending</b> </h5>)}
+                                {order.isPaid ? (<h5>Payment Status : <b className='bg-success p-1 rounded'>Payment Done</b> </h5>) : (<h5>Payment Status : <b className='bg-danger p-1 rounded'>Payment Pending</b> </h5>)}
                                 {order.isDelivered ? (<h5>Delivery Status : <b>Order Delivered</b> </h5>) : (<h5>Order Status : <b>Not Delivered</b> </h5>)}
-                                {/* <div>
-                                    <br />
-                                    <h2 style={{ backgroundColor: '#F24C4C' }} className='py-3 text-center'><b>Shipping Details</b></h2>
-                                    <h5 className='mt-4'>Name : <b>{order.name}</b></h5>
-                                    <h5>Address : <b>{order.shippingAddress.address}</b></h5>
-                                    <h5>City : <b>{order.shippingAddress.city}</b></h5>
-                                    <h5>Pin Code : <b>{order.shippingAddress.postalCode}</b></h5>
-                                    <h5 className='mb-4'>Country : <b>{order.shippingAddress.country}</b></h5>
-                                </div> */}
                             </div>
                         </div>
                     </div>
                 )}
 
-                <div className="container col-md-4">
-                    {
-                        order.isPaid ? (
-                            <br />
+                <div className="col-md-4">
 
-                        ) : (
+                    {
+                        !order?.isPaid ? (
                             <PayPalButton amount={order.totalAmount} onSuccess={onSuccessHandler} />
-                        )
+                        ) :
+                            (
+                                <br />
+                            )
                     }
                 </div>
+
 
             </div>
         </Layout>

@@ -63,4 +63,18 @@ router.post('/getorderbyid', (req, res) => {
     })
 })
 
+router.post('/getordersbyuserid', (req, res) => {
+    const userid = req.body.userid
+
+    Booking.find({ userId: userid }, (err, docs) => {
+
+        if (err) {
+            res.error('Something went wrong')
+        } else {
+            res.send(docs)
+        }
+
+    })
+})
+
 module.exports = router

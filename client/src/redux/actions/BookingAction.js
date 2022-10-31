@@ -33,6 +33,24 @@ export const getOrderById = (id) => (dispatch, getState) => {
         })
 }
 
+export const getOrdersByUserId = () => (dispatch, getState) => {
+    const userdata = JSON.parse(localStorage.getItem('auth'))
+
+    // console.log(userid);
+    dispatch({ type: 'GET_ORDERSBYUSERID_REQUEST' })
+
+    axios.post("/api/booking/getordersbyuserid/", { userid: userdata[0]._id })
+        .then(res => {
+            dispatch({ type: 'GET_ORDERSBYUSERID_SUCCESS', payload: res.data })
+            // console.log(res.data);
+            // console.log(userid);
+        })
+        .catch(err => {
+            dispatch({ type: 'GET_ORDERSBYUSERID_ERROR', payload: err })
+
+        })
+}
+
 
 export const savePaymentMethod = (data) => dispatch => {
     dispatch({ type: "SAVE_PAYMENT_METHOD", payload: data })

@@ -88,6 +88,30 @@ export const getOrderByIdReducer = (state = {}, action) => {
     }
 }
 
+export const getOrdersByUserIdReducer = (state = {}, action) => {
+
+    switch (action.type) {
+        case 'GET_ORDERSBYUSERID_REQUEST': return {
+            ...state,
+            loading: true
+        }
+
+        case 'GET_ORDERSBYUSERID_SUCCESS': return {
+            ...state,
+            loading: false,
+            orders: action.payload
+        }
+
+        case 'GET_ORDERSBYUSERID_ERROR': return {
+            ...state,
+            loading: false,
+            error: true
+        }
+
+        default: return { state }
+    }
+}
+
 export const orderPayReducer = (state = {}, action) => {
     switch (action.type) {
         case "ORDER_PAY_REQUEST": return {
