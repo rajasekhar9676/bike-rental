@@ -39,19 +39,52 @@ export const getBikeByIdReducer = (state = { bike: {} }, action) => {
 export const bookingReducer = (state = {}, action) => {
     switch (action.type) {
         case 'BOOK_REQUEST': return {
+            ...state,
             loading: true
         }
 
         case 'BOOK_SUCCESS': return {
-            msg: action.payload,
-            loading: false
+            ...state,
+            loading: false,
+            success: true,
+            book: action.payload
         }
 
         case 'BOOK_ERROR': return {
-            msg: action.payload,
-            loading: false
+            ...state,
+            loading: false,
+            error: action.payload
         }
-        default: return state
+        case 'SAVE_PAYMENT_METHOD': return {
+            ...state,
+            paymentMethod: action.payload
+        }
+        default:
+            return state
+    }
+}
+
+export const getOrderByIdReducer = (state = {}, action) => {
+
+    switch (action.type) {
+        case 'GET_ORDERBYID_REQUEST': return {
+            ...state,
+            loading: true
+        }
+
+        case 'GET_ORDERBYID_SUCCESS': return {
+            ...state,
+            loading: false,
+            order: action.payload
+        }
+
+        case 'GET_ORDERBYID_ERROR': return {
+            ...state,
+            loading: false,
+            error: true
+        }
+
+        default: return { state }
     }
 }
 

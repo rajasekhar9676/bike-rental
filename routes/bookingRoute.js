@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const asyncHandler = require('express-async-handler')
 const Booking = require('../models/bookingModel')
 const Bike = require('../models/bikeModel')
 
@@ -13,7 +14,7 @@ router.post("/bookbike", async (req, res) => {
         bike.bookedSlots.push(req.body.bookedSlots)
         bike.availableCount = req.body.availableCount
         await bike.save()
-        res.json({ msg: 'Booking Success!' })
+        res.json({ msg: 'Booking Success!', book: newBooking })
         console.log(req.body.availableCount);
     } catch (error) {
         console.log(error);
@@ -22,6 +23,44 @@ router.post("/bookbike", async (req, res) => {
 
 
     }
+})
+
+router.put('/:id/pay', asyncHandler(async (req, res) => {
+    const order = await Booking.findById(req.params.id)
+    // console.log(req.params.id);
+    // console.log(order);
+    if (order) {
+        order.isPaid = true
+        order.paidAt = Date.now()
+        order.paymentResult = {
+            id: req.body.id,
+            status: req.body.status,
+            update_time: req.body.update_time,
+            email_address: req.body.payer.email_address
+        }
+        // console.log(order);
+
+        const updateOrder = await order.save()
+        res.json(updateOrder)
+    } else {
+        res.status(500)
+        throw new Error('Order not found')
+    }
+
+}))
+
+router.post('/getorderbyid', (req, res) => {
+    const id = req.body.id
+
+    Booking.find({ _id: id }, (err, docs) => {
+
+        if (err) {
+            res.error('Something went wrong')
+        } else {
+            res.send(docs[0])
+        }
+
+    })
 })
 
 module.exports = router

@@ -1,12 +1,13 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from '@redux-devtools/extension';
 import thunk from 'redux-thunk'
-import { bikesReducer, getBikeByIdReducer, bookingReducer, orderPayReducer } from './reducers/bikeReducer';
+import { bikesReducer, getBikeByIdReducer, bookingReducer, getOrderByIdReducer, orderPayReducer } from './reducers/bikeReducer';
 import { alertReducer } from './reducers/alertReducer'
 import { registerUserReducer, loginUserReducer } from './reducers/userReducer';
 const composeEnhancers = composeWithDevTools({
     // Specify here name, actionsDenylist, actionsCreators and other options
 });
+
 
 const rootReducer = combineReducers({
     bikesReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
     loginUserReducer,
     getBikeByIdReducer,
     bookingReducer,
+    getOrderByIdReducer,
     orderPayReducer
 
 })

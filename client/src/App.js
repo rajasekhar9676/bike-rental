@@ -7,6 +7,7 @@ import Payment from './pages/Payment';
 import Booking from './pages/Booking';
 import BookingList from './pages/BookingList';
 import Profile from './pages/Profile';
+import PlaceOrder from './pages/PlaceOrder';
 
 
 function App() {
@@ -17,8 +18,9 @@ function App() {
       <Route path='/home' element={<Home />} />
       <Route path='/booking/:bikeid' element={<Booking />} />
       <Route path='/booking-list' element={<BookingList />} />
-      <Route path='profile' element={<Profile />} />
-      <Route path='/payment' element={<Payment />} />
+      <Route path='/profile' element={<Profile />} />
+      <Route path='/payment/:id' element={<Payment />} />
+      {/* <Route path='/placeorder' element={<PlaceOrder />} /> */}
     </Routes>
   );
 }

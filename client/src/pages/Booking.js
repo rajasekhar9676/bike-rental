@@ -5,64 +5,28 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import moment from 'moment'
-import { PayPalButton } from 'react-paypal-button-v2'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { getBikeById } from '../redux/actions/bikesAction'
 import { useSelector, useDispatch } from 'react-redux'
-import { bookingBike, payOrder } from '../redux/actions/BookingAction'
+import { bookingBike } from '../redux/actions/BookingAction'
 
 
 function Booking() {
     const [fromvalue, setfromvalue] = useState('')
     const [tovalue, settovalue] = useState('')
     const [totalhrs, settotalhrs] = useState(0)
-    const [sdkReady, setSdkReady] = useState(false)
     const { bikeid } = useParams()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const getbikebyidstate = useSelector((state) => state.getBikeByIdReducer)
     const getbookstate = useSelector((state) => state.bookingReducer)
     const { loading, bike, error } = getbikebyidstate
-    const { msg } = getbookstate
-    const orderPayReducer = useSelector(state => state.orderPayReducer)
-    const { success: successPay } = orderPayReducer
+    const { book, success } = getbookstate
     const userdata = JSON.parse(localStorage.getItem('auth'))
 
     useEffect(() => {
         dispatch(getBikeById(bikeid))
     }, [])
-
-
-    useEffect(() => {
-        const addPaypal = async () => {
-            const { data: clientId } = await axios.get('/api/config/paypal')
-            const script = document.createElement('script')
-            script.type = 'text/javascript'
-            script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
-            script.async = true
-            script.onload = () => {
-                setSdkReady(true)
-            }
-            document.body.appendChild(script)
-        }
-
-        if (!bike || successPay) {
-            dispatch({ type: "ORDER_PAY_RESET" })
-            // window.location.reload()
-        } else if (!bike.isPaid) {
-            if (!window.paypal) {
-                addPaypal()
-            } else {
-                setSdkReady(true)
-            }
-        }
-        // , successPay, 
-
-    }, [dispatch, bike])
-
-    const onSuccessHandler = (paymentResult) => {
-        console.log(paymentResult)
-        dispatch(payOrder(bikeid, paymentResult))
-    }
 
 
     var from = moment(fromvalue)._d;
@@ -88,6 +52,10 @@ function Booking() {
             bikeid: bikeid,
             totalhrs: totalhrs,
             totalAmount: bike.rentPerHour * totalhrs,
+            bikeimage: bike.image,
+            bikename: bike.name,
+            rentPerHour: bike.rentPerHour,
+            fuelType: bike.fuelType,
             availableCount: bike.availableCount - 1,
             bookedSlots: {
                 from,
@@ -97,14 +65,18 @@ function Booking() {
         }
 
         dispatch(bookingBike(reqObj))
-        toast.success(msg, {
-            position: toast.POSITION.TOP_RIGHT,
-            autoClose: 3500,
-            theme: "colored"
-        });
+        console.log(book);
+
 
         console.log(reqObj);
     }
+
+    useEffect(() => {
+        if (success) {
+            navigate(`/payment/${book._id}`)
+        }
+        //eslint-disable-next-line
+    }, [success])
 
     return (
 
@@ -159,23 +131,7 @@ function Booking() {
 
 
                                                         <button onClick={bookNow} type="submit" className="time btn-lg text-center btn btn-dark my-1 float-right">Book Now</button>
-                                                        <div className="mt-5">
-                                                            <div className="col-md-4 ">
-                                                                <h5>Payment Status :</h5>
-                                                                {bike.isPaid == false ? <h3 className='bg-danger rounded text-white my-3 col-md-4 mx-auto p-2'>Not Paid</h3> : <h3 className='bg-success rounded text-white my-3 col-md-6 mx-auto p-2'>Payment done</h3>}
-                                                            </div>
-                                                            <div className="col-md-4">
 
-                                                                {
-                                                                    !bike.isPaid && (
-                                                                        <li>
-
-                                                                            <PayPalButton amount={bike.rentPerHour * totalhrs} onSuccess={onSuccessHandler} />
-                                                                        </li>
-                                                                    )
-                                                                }
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 ) : (
                                                     <button type="submit" className="btn-lg time text-center btn btn-dark my-1 float-right" disabled>Book Now</button>
@@ -187,20 +143,8 @@ function Booking() {
 
 
                                         }
-
-
-
                                     </div>
-
-
-
                                 </div>
-
-
-
-
-
-
 
                             )
 

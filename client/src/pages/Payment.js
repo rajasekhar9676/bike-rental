@@ -1,32 +1,123 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Layout from '../components/Layout'
-import { useNavigate } from 'react-router-dom'
-
+import moment from 'moment'
+import axios from 'axios'
+import { getBikeById } from '../redux/actions/bikesAction'
+import { PayPalButton } from 'react-paypal-button-v2'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
+import { getOrderById, savePaymentMethod, payOrder } from '../redux/actions/BookingAction'
 
 function Payment() {
+    const { id } = useParams()
+    const [sdkReady, setSdkReady] = useState(false)
     const [paymentMethod, setPaymentMethod] = useState('paypal')
+    const orderstate = useSelector(state => state.getOrderByIdReducer)
+    const { order, loading, error } = orderstate
+    const orderPayReducer = useSelector(state => state.orderPayReducer)
+    const { loading: loadingPay, success: successPay } = orderPayReducer
+    const getbikebyidstate = useSelector((state) => state.getBikeByIdReducer)
+    const { bike } = getbikebyidstate
+    const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const paymentSubmit = () => {
 
+
+    useEffect(() => {
+        dispatch(getOrderById(id))
+
+        console.log(order);
+    }, [id])
+
+
+    useEffect(() => {
+        const addPaypal = async () => {
+            const { data: clientId } = await axios.get('/api/config/paypal')
+            const script = document.createElement('script')
+            script.type = 'text/javascript'
+            script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
+            script.async = true
+            script.onload = () => {
+                setSdkReady(true)
+            }
+            document.body.appendChild(script)
+        }
+
+        if (!order || successPay) {
+            dispatch({ type: "ORDER_PAY_RESET" })
+            dispatch(getOrderById(id))
+            // window.location.reload()
+        } else if (!order.isPaid) {
+            if (!window.paypal) {
+                addPaypal()
+            } else {
+                setSdkReady(true)
+            }
+        }
+
+    }, [dispatch, id, successPay, order])
+
+
+
+    const onSuccessHandler = (paymentResult) => {
+        console.log(paymentResult)
+        dispatch(payOrder(id, paymentResult))
     }
 
     return (
         <Layout>
-            <h1 className='mt-5'>Payment Method</h1>
-            <h5 className='mt-5'>Select payment method below</h5>
-            <form className='col-md-9 mt-5 mx-auto' onSubmit={paymentSubmit} >
-                <div className="form-group">
-                    <input type="radio" class="form-check-input" id="paypal" name="paymentmethod" value="paypal" checked onChange={e => setPaymentMethod(e.target.value)} /> Paypal or Creditcard
 
+            <div style={{ marginTop: "120px" }}>
+                {loading && <img src="https://wpamelia.com/wp-content/uploads/2018/11/ezgif-2-6d0b072c3d3f.gif" alt="" />}
+                {order && (
+                    <div className='px-3'>
+                        <div className="row justify-content-center my-5">
+                            <div className="col-md-5 card p-1" style={{ textAlign: 'left' }}>
+                                <h2 style={{ backgroundColor: '#F24C4C' }} className='text-center py-3'> <b> Bike Booked</b></h2>
+                                <img className='mx-auto' src={order.bikeimage} width="380px" height="200px" />
+                                <h5 className='mt-4'>Bike name: <b>{order.bikename}</b> </h5>
+                                <h5>Rent per hour : <b> {order.rentPerHour}</b></h5>
+                                <h5>Fuel type : <b> {order.fuelType}</b></h5>
+
+
+                            </div>
+                            <div className="col-md-5 card mx-3" style={{ textAlign: 'right' }}>
+                                <h2 style={{ backgroundColor: '#F24C4C' }} className='py-3 text-center'> <b> Booking Details</b></h2>
+                                <h5 className='mt-4'>Order id : <b> {order._id}</b></h5>
+                                <h5>Total Amount : <b>₹{order.totalAmount}/-</b></h5>
+                                <h5>Total Hours : <b>{order.totalhrs}hrs</b> </h5>
+
+                                <h5>From time : <b>{moment(order.bookedSlots.from).format('dddd DD-MMM-YYYY, h:mm:ss a')}</b> </h5>
+                                <h5>To time : <b>{moment(order.bookedSlots.to).format('dddd DD-MMM-YYYY, h:mm:ss a')}</b> </h5>
+                                <h5>Transaction Id : <b>{order.transactionId}</b> </h5>
+                                {order.isPaid ? (<h5>Payment Status : <b>Payment Done</b> </h5>) : (<h5>Payment Status : <b>Payment Pending</b> </h5>)}
+                                {order.isDelivered ? (<h5>Delivery Status : <b>Order Delivered</b> </h5>) : (<h5>Order Status : <b>Not Delivered</b> </h5>)}
+                                {/* <div>
+                                    <br />
+                                    <h2 style={{ backgroundColor: '#F24C4C' }} className='py-3 text-center'><b>Shipping Details</b></h2>
+                                    <h5 className='mt-4'>Name : <b>{order.name}</b></h5>
+                                    <h5>Address : <b>{order.shippingAddress.address}</b></h5>
+                                    <h5>City : <b>{order.shippingAddress.city}</b></h5>
+                                    <h5>Pin Code : <b>{order.shippingAddress.postalCode}</b></h5>
+                                    <h5 className='mb-4'>Country : <b>{order.shippingAddress.country}</b></h5>
+                                </div> */}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                <div className="container col-md-4">
+                    {
+                        order.isPaid ? (
+                            <br />
+
+                        ) : (
+                            <PayPalButton amount={order.totalAmount} onSuccess={onSuccessHandler} />
+                        )
+                    }
                 </div>
 
-                <div className="col-md-4 mx-auto">
-                    <button type="submit" className="submit-btn my-5">Submit</button>
-
-                </div>
-
-            </form>
+            </div>
         </Layout>
     )
 }
