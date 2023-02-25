@@ -27,10 +27,13 @@ function Register() {
         e.preventDefault()
 
         if (pass == cpass) {
+            var currentDate= new Date()
+
             const obj = {
                 name,
                 email,
-                pass
+                pass,
+                date:currentDate.toLocaleString()
             }
             dispatch(userRegister(obj))
             toast.success(msg, {

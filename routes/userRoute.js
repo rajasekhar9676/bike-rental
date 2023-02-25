@@ -40,5 +40,32 @@ router.post("/register", async (req, res) => {
     })
 })
 
+router.post("/update",async (req,res)=>{
+    const updateObj = req.body
+    const email = updateObj.email
+    const curpass = updateObj.curpass
+    const pass = updateObj.pass
+    const update = updateObj.update
+    const user = await User.findOne({email})
+    if(user && (curpass == user.pass)){
+        User.findByIdAndUpdate(user._id,{
+            name:updateObj.uname,
+            pass,
+            update
+        },(err=>{
+            if(err){
+                console.log("Network error");
+                return res.json({ msg: 'Something went wrong' })
+
+            }
+            else 
+            return res.json({msg: "User details updated successfully"})
+        }))
+    }else{
+        console.log("Current password is invalid");
+        return res.send({ success: false, msg: "Current password is invalid" })
+    }
+})
+
 
 module.exports = router

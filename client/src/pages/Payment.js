@@ -62,6 +62,7 @@ function Payment() {
     const onSuccessHandler = (paymentResult) => {
         console.log(paymentResult)
         dispatch(payOrder(id, paymentResult))
+        alert("Payment success")
     }
 
     return (
@@ -70,21 +71,24 @@ function Payment() {
             <div style={{ marginTop: "120px" }}>
                 {loading && <img src="https://wpamelia.com/wp-content/uploads/2018/11/ezgif-2-6d0b072c3d3f.gif" alt="" />}
                 {order && (
-                    <div className='px-3'>
+                    <div className=''>
                         <div className="row justify-content-center my-5">
-                            <div className="col-md-5 card p-1" style={{ textAlign: 'left' }}>
+                            <div className="col-md-6 card p-1" style={{ textAlign: 'left' }}>
                                 <h2 style={{ backgroundColor: '#F24C4C' }} className='text-center py-3'> <b> Bike Booked</b></h2>
-                                <img className='mx-auto' src={order.bikeimage} width="380px" height="200px" />
+                                <img className='mx-auto' src={order.bikeimage} width="380px" height="220px" />
                                 <h5 className='mt-4'>Bike name: <b>{order.bikename}</b> </h5>
-                                <h5>Rent per hour : <b> {order.rentPerHour}</b></h5>
+                                <h5>Rent per hour : <b> ${order.rentPerHour}</b></h5>
                                 <h5>Fuel type : <b> {order.fuelType}</b></h5>
 
 
                             </div>
-                            <div className="col-md-5 card mx-3" style={{ textAlign: 'right' }}>
-                                <h2 style={{ backgroundColor: '#F24C4C' }} className='py-3 text-center'> <b> Booking Details</b></h2>
+                            <div className="col-md-4 card" style={{ textAlign: 'right' }}>
+                            <h2 style={{ backgroundColor: '#F24C4C' }} className='py-3 text-center'> <b> Booking Details</b></h2>
+
+                            <div className="my-auto">
+
                                 <h5 className='mt-4'>Order id : <b> {order._id}</b></h5>
-                                <h5>Total Amount : <b>₹{order.totalAmount}/-</b></h5>
+                                <h5>Total Amount : <b>${order.totalAmount}/-</b></h5>
                                 <h5>Total Hours : <b>{order.totalhrs}hrs</b> </h5>
 
                                 <h5>From time : <b>{moment(order.bookedSlots.from).format('dddd DD-MMM-YYYY, h:mm:ss a')}</b> </h5>
@@ -93,20 +97,30 @@ function Payment() {
                                 {order.isPaid ? (<h5>Payment Status : <b className='bg-success p-1 rounded'>Payment Done</b> </h5>) : (<h5>Payment Status : <b className='bg-danger p-1 rounded'>Payment Pending</b> </h5>)}
                                 {order.isDelivered ? (<h5>Delivery Status : <b>Order Delivered</b> </h5>) : (<h5>Order Status : <b>Not Delivered</b> </h5>)}
                             </div>
+                            </div>
+
                         </div>
                     </div>
                 )}
 
-                <div className="col-md-4">
-
+                <div className="container col-md-4">
+                    <div className="text-center">
                     {
                         !order?.isPaid ? (
-                            <PayPalButton amount={order.totalAmount} onSuccess={onSuccessHandler} />
+                            <div>
+                    <h5 className='font-weight-bold py-4'>Click any of the payment modes below.</h5>
+
+                            <PayPalButton currency="USD" amount={order?.totalAmount} onSuccess={onSuccessHandler} />
+                            </div>
+
                         ) :
                             (
-                                <br />
+                                <h3><b>Enjoy your ride! 🏍️</b></h3>
                             )
                     }
+
+                    </div>
+
                 </div>
 
 

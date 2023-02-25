@@ -124,8 +124,8 @@ function Booking() {
                                                 <hr />
 
                                                 <h5 className='my-3'>Total booking hours : <span className='specs'>{totalhrs}</span></h5>
-                                                <h5 className='my-3'>Per Hour Cost : <span className='specs'>₹{bike.rentPerHour} /-</span></h5>
-                                                <h3 className='my-3'>Grand Total : <span className='specs'>₹{bike.rentPerHour * totalhrs} /-</span></h3>
+                                                <h5 className='my-3'>Per Hour Cost : <span className='specs'>${bike.rentPerHour} /-</span></h5>
+                                                <h3 className='my-3'>Grand Total : <span className='specs'>${bike.rentPerHour * totalhrs} /-</span></h3>
                                                 {(bike.rentPerHour * totalhrs) > 0 ? (
                                                     <div className="">
 
