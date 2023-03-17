@@ -19,8 +19,4 @@ if (process.env.NODE_ENV === 'production') {
     })
 }
 
-<<<<<<< HEAD
 app.listen(port, () => console.log("Server started on server 5000"))
-=======
-app.listen(port, () => console.log("Server started on server 5000"))
->>>>>>> cc09df59a5436ffdf15a676151382f04879ad181
