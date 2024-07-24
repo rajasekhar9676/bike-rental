@@ -1,11 +1,22 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 
 function Layout(props) {
   const navigate = useNavigate();
 
-  const user = JSON.parse(localStorage.getItem("auth"));
+  // Get the "auth" item from localStorage
+  const auth = localStorage.getItem("auth");
+  let user = null;
+
+  // Check if the auth value is not null, "null", "undefined", or an invalid JSON string
+  if (auth && auth !== "undefined" && auth !== "null") {
+    try {
+      user = JSON.parse(auth);
+    } catch (e) {
+      console.error("Invalid JSON string in localStorage for key 'auth'");
+    }
+  }
+
   const logout = () => {
     localStorage.removeItem("auth");
     navigate("/");
@@ -35,7 +46,7 @@ function Layout(props) {
               aria-haspopup="true"
               aria-expanded="false"
             >
-              {user?.name}
+              {user?.name || "Guest"}
             </button>
             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <Link className="dropdown-item" to="/home">

@@ -7,18 +7,31 @@ import { getOrdersByUserId } from "../redux/actions/BookingAction";
 
 function BookingList() {
   const orderstate = useSelector((state) => state.getOrdersByUserIdReducer);
-  const userdata = JSON.parse(localStorage.getItem("auth"));
   const navigate = useNavigate();
-
-  const { orders, error, loading } = orderstate;
   const dispatch = useDispatch();
+
+  // Get the "auth" item from localStorage
+  const auth = localStorage.getItem("auth");
+  let userdata = null;
+
+  // Check if the auth value is not null, "null", "undefined", or an invalid JSON string
+  if (auth && auth !== "undefined" && auth !== "null") {
+    try {
+      userdata = JSON.parse(auth);
+    } catch (e) {
+      console.error("Invalid JSON string in localStorage for key 'auth'");
+    }
+  }
+
   useEffect(() => {
-    if (localStorage.getItem("auth")) {
+    if (userdata) {
       dispatch(getOrdersByUserId(userdata._id));
     } else {
       navigate("/");
     }
   }, [dispatch]);
+
+  const { orders, error, loading } = orderstate;
 
   return (
     <Layout>
@@ -30,7 +43,6 @@ function BookingList() {
               <thead className="thead-dark bg-dark text-white">
                 <tr className="text-center">
                   <th scope="col">Order ID</th>
-                  {/* <th scope='col'>Transaction ID</th> */}
                   <th scope="col">Bike name</th>
                   <th scope="col">Fuel </th>
                   <th scope="col">Total hours</th>
@@ -42,36 +54,31 @@ function BookingList() {
                 </tr>
               </thead>
               <tbody>
-                {!orders ? (
+                {orders?.length === 0 ? (
                   <p className="text-center">NO orders yet</p>
                 ) : (
                   orders.map((order) => {
                     return (
-                      <tr className="text-center">
+                      <tr className="text-center" key={order._id}>
                         <td>{order._id}</td>
-                        {/* <td>{order.transactionId}</td> */}
-
                         <td>{order.bikename}</td>
                         <td>{order.fuelType}</td>
                         <td>{order.totalhrs}</td>
                         <td>{order.rentPerHour}</td>
                         <td>${order.totalAmount}/-</td>
-
                         <td>
                           {moment(order.createdAt).format(
                             "dddd DD-MMM-YYYY, h:mm:ss a"
                           )}
                         </td>
-
                         <td>
                           {order.isPaid ? (
                             <Link
                               className="text-decoration-none text-white"
                               to={`/payment/${order._id}`}
                             >
-                              {" "}
                               <h6 className="bg-success p-1 rounded">
-                                <b>Payment Done</b>{" "}
+                                <b>Payment Done</b>
                               </h6>
                             </Link>
                           ) : (
@@ -80,7 +87,7 @@ function BookingList() {
                               to={`/payment/${order._id}`}
                             >
                               <h6 className="bg-warning">
-                                <b>Payment Pending</b>{" "}
+                                <b>Payment Pending</b>
                               </h6>
                             </Link>
                           )}
